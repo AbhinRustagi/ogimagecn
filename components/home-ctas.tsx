@@ -6,6 +6,8 @@ import { ArrowRightIcon } from "@/components/animated-icons/arrow-right";
 import type { ArrowRightIconHandle } from "@/components/animated-icons/arrow-right";
 import { ComponentIcon } from "@/components/animated-icons/component";
 import type { ComponentIconHandle } from "@/components/animated-icons/component";
+import { ShareIcon } from "@/components/animated-icons/share";
+import type { ShareIconHandle } from "@/components/animated-icons/share";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { useIconAnimation } from "@/hooks/use-icon-animation";
@@ -52,6 +54,27 @@ const BrowseComponentsButton = () => {
   );
 };
 
+const TestYoursButton = () => {
+  const { iconRef, onMouseEnter, onMouseLeave } =
+    useIconAnimation<ShareIconHandle>();
+
+  return (
+    <Button
+      asChild
+      variant="outline"
+      sound="click"
+      className="px-4"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <Link href={ROUTES.TEST} transitionTypes={["nav-forward"]}>
+        <ShareIcon className="hidden sm:inline" ref={iconRef} size={22} />
+        Test Yours
+      </Link>
+    </Button>
+  );
+};
+
 export const HomeCtas = ({ className }: { className?: string }) => (
   <div
     className={cn(
@@ -61,5 +84,6 @@ export const HomeCtas = ({ className }: { className?: string }) => (
   >
     <GetStartedButton />
     <BrowseComponentsButton />
+    <TestYoursButton />
   </div>
 );
