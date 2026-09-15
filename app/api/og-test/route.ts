@@ -114,9 +114,11 @@ const readMeta = (html: string) => {
     description: pick("og:description") || pick("description"),
     height: pick("og:image:height"),
     image: pick("og:image") || pick("twitter:image"),
+    siteName: pick("og:site_name"),
     title:
       pick("og:title") ||
       (html.match(/<title[^>]*>([^<]*)</i)?.[1] ?? "").trim(),
+    url: pick("og:url"),
     width: pick("og:image:width"),
   };
 };
@@ -151,6 +153,94 @@ const trace = async (target: string, ua: string, accept: string) => {
     return { hops, res, url: current };
   }
   throw new Error("Too many redirects.");
+};
+
+interface Finding {
+  level: "warn" | "tip";
+  title: string;
+  detail: string;
+}
+
+/**
+ * What is actually wrong, in words rather than status codes.
+ *
+ * Only things that change how a link looks when someone shares it. A missing
+ * og:url or a redirecting image is worth saying; a missing og:locale is not.
+ */
+const buildFindings = (
+  meta: ReturnType<typeof readMeta> | null,
+  images: { redirects: number; bytes: number; ok: boolean }[],
+  imageUrl: string
+): Finding[] => {
+  const out: Finding[] = [];
+  if (!meta || !imageUrl) {
+    out.push({
+      detail:
+        "Without og:image most platforms show a bare link, or pick a picture off the page at random.",
+      level: "warn",
+      title: "No image to share",
+    });
+    return out;
+  }
+  if (!meta.title) {
+    out.push({
+      detail:
+        "Platforms fall back to the page title, which is usually written for search, not for sharing.",
+      level: "warn",
+      title: "No og:title",
+    });
+  }
+  if (!meta.description) {
+    out.push({
+      detail:
+        "The line under the image will be empty or scraped from the page.",
+      level: "warn",
+      title: "No og:description",
+    });
+  }
+  if (!meta.width || !meta.height) {
+    out.push({
+      detail:
+        "Telling platforms the size up front means the card renders immediately instead of after the image downloads.",
+      level: "tip",
+      title: "No og:image:width or og:image:height",
+    });
+  }
+  if (!meta.card) {
+    out.push({
+      detail:
+        "Without twitter:card set to summary_large_image, X shows a small square thumbnail rather than the full picture.",
+      level: "warn",
+      title: "No twitter:card",
+    });
+  }
+  if (!meta.url) {
+    out.push({
+      detail:
+        "og:url tells platforms which address is canonical when the same page is reachable more than one way.",
+      level: "tip",
+      title: "No og:url",
+    });
+  }
+  const hops = Math.max(...images.map((i) => i.redirects), 0);
+  if (hops > 0) {
+    out.push({
+      detail:
+        "Every crawler here followed it, but it is an avoidable hop. It usually means the image URL points at a different host from the one you serve, such as the apex domain rather than www.",
+      level: "warn",
+      title: "The image redirects",
+    });
+  }
+  const bytes = images.find((i) => i.ok)?.bytes ?? 0;
+  if (bytes > 5_000_000) {
+    out.push({
+      detail:
+        "Some platforms refuse anything over about 5MB and will show no image at all.",
+      level: "warn",
+      title: "The image is large",
+    });
+  }
+  return out;
 };
 
 export const POST = async (request: Request) => {
@@ -256,8 +346,10 @@ export const POST = async (request: Request) => {
       )
     : [];
 
+  const findings = buildFindings(found, images, imageUrl);
+
   return Response.json(
-    { imageUrl, images, meta: found, pages, url: target },
+    { findings, imageUrl, images, meta: found, pages, url: target },
     { headers: { "Cache-Control": "no-store" } }
   );
 };

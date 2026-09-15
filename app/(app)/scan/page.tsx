@@ -8,21 +8,21 @@ import { createPageMetadata } from "@/seo/metadata";
 export const metadata: Metadata = createPageMetadata({
   description:
     "Paste a URL and see how Facebook, X, LinkedIn, Slack, Discord and WhatsApp each fetch its Open Graph card, plus the card itself.",
-  path: ROUTES.TEST,
-  title: "Test yours",
+  path: ROUTES.SCAN,
+  title: "Scan",
 });
 
-const TestPage = () => (
+const ScanPage = () => (
   <PageTransition>
     <section className="container-wrapper relative">
       <div className="container flex max-w-3xl flex-col gap-4 py-16 md:py-20">
         <h1 className="from-foreground via-foreground to-foreground/65 bg-linear-to-b bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
-          Test yours
+          Scan
         </h1>
         <p className="text-muted-foreground text-balance">
-          Paste any URL. Each crawler fetches the page for real, then fetches
-          the card it points at, and the card is shown as it actually renders.
-          No mock, no cached third party debugger.
+          Paste a URL and see the card the way each platform will show it, plus
+          anything worth fixing. Every check is a real fetch made as that
+          crawler, not a guess and not a cached third party result.
         </p>
         <div className="mt-4">
           <OgTester />
@@ -32,4 +32,4 @@ const TestPage = () => (
   </PageTransition>
 );
 
-export default TestPage;
+export default ScanPage;

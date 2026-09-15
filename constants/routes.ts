@@ -19,7 +19,7 @@ export const ROUTES = {
   REGISTRY: "/r/registry.json",
   ROBOTS: "/robots.txt",
   RSS: "/rss.xml",
+  SCAN: "/scan",
   SITEMAP: "/sitemap.xml",
   SPONSOR: "/sponsor",
-  TEST: "/test",
 } as const;
