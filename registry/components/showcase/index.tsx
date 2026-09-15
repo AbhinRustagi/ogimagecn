@@ -5,7 +5,12 @@ export interface ShowcaseProps {
   accent?: string;
 }
 
-export const Showcase = ({ title, subtitle, url, accent }: ShowcaseProps) => (
+export const Showcase = ({
+  title,
+  subtitle,
+  url,
+  accent = "#6366f1",
+}: ShowcaseProps) => (
   <div
     style={{
       alignItems: "center",
