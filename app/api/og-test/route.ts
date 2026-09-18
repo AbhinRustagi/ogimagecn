@@ -13,6 +13,47 @@ import { isIP } from "node:net";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/* ------------------------------------------------------------------ */
+/*  In-memory rate limiter (per-function-instance)                     */
+/*  Good enough to stop casual abuse. Won't share state across Vercel  */
+/*  edge instances, but that's fine for a free-tier scanner.           */
+/* ------------------------------------------------------------------ */
+
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 10;
+
+const hits = new Map<string, { count: number; resetAt: number }>();
+
+/** Evict stale entries every 5 minutes so the map doesn't grow forever. */
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, v] of hits) {
+    if (now > v.resetAt) {
+      hits.delete(key);
+    }
+  }
+}, 5 * 60_000);
+
+const rateLimit = (ip: string) => {
+  const now = Date.now();
+  const entry = hits.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    hits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { ok: true, remaining: RATE_LIMIT_MAX - 1 };
+  }
+
+  entry.count += 1;
+  const remaining = Math.max(0, RATE_LIMIT_MAX - entry.count);
+
+  if (entry.count > RATE_LIMIT_MAX) {
+    const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
+    return { ok: false, remaining: 0, retryAfter };
+  }
+
+  return { ok: true, remaining };
+};
+
 const CRAWLERS = [
   { id: "facebook", label: "Facebook", ua: "facebookexternalhit/1.1" },
   { id: "x", label: "X", ua: "Twitterbot/1.0" },
@@ -20,6 +61,8 @@ const CRAWLERS = [
   { id: "slack", label: "Slack", ua: "Slackbot-LinkExpanding 1.0" },
   { id: "discord", label: "Discord", ua: "Discordbot/2.0" },
   { id: "whatsapp", label: "WhatsApp", ua: "WhatsApp/2.23" },
+  { id: "telegram", label: "Telegram", ua: "TelegramBot (like TwitterBot)" },
+  { id: "pinterest", label: "Pinterest", ua: "Pinterest/0.2" },
 ] as const;
 
 const TIMEOUT_MS = 10_000;
@@ -156,7 +199,6 @@ const trace = async (target: string, ua: string, accept: string) => {
 };
 
 interface Finding {
-  level: "warn" | "tip";
   title: string;
   detail: string;
 }
@@ -166,6 +208,9 @@ interface Finding {
  *
  * Only things that change how a link looks when someone shares it. A missing
  * og:url or a redirecting image is worth saying; a missing og:locale is not.
+ * Everything reported here is worth fixing, so there are no severity levels:
+ * if a tag or a fetch does not change what a person sees when the link is
+ * shared, it does not belong in this list at all.
  */
 const buildFindings = (
   meta: ReturnType<typeof readMeta> | null,
@@ -177,7 +222,6 @@ const buildFindings = (
     out.push({
       detail:
         "Without og:image most platforms show a bare link, or pick a picture off the page at random.",
-      level: "warn",
       title: "No image to share",
     });
     return out;
@@ -186,7 +230,6 @@ const buildFindings = (
     out.push({
       detail:
         "Platforms fall back to the page title, which is usually written for search, not for sharing.",
-      level: "warn",
       title: "No og:title",
     });
   }
@@ -194,7 +237,6 @@ const buildFindings = (
     out.push({
       detail:
         "The line under the image will be empty or scraped from the page.",
-      level: "warn",
       title: "No og:description",
     });
   }
@@ -202,7 +244,6 @@ const buildFindings = (
     out.push({
       detail:
         "Telling platforms the size up front means the card renders immediately instead of after the image downloads.",
-      level: "tip",
       title: "No og:image:width or og:image:height",
     });
   }
@@ -210,7 +251,6 @@ const buildFindings = (
     out.push({
       detail:
         "Without twitter:card set to summary_large_image, X shows a small square thumbnail rather than the full picture.",
-      level: "warn",
       title: "No twitter:card",
     });
   }
@@ -218,8 +258,14 @@ const buildFindings = (
     out.push({
       detail:
         "og:url tells platforms which address is canonical when the same page is reachable more than one way.",
-      level: "tip",
       title: "No og:url",
+    });
+  }
+  if (images.some((i) => !i.ok)) {
+    out.push({
+      detail:
+        "At least one crawler asked for the image and did not get it, so that platform will show the link without a picture.",
+      title: "Some crawlers could not load the image",
     });
   }
   const hops = Math.max(...images.map((i) => i.redirects), 0);
@@ -227,7 +273,6 @@ const buildFindings = (
     out.push({
       detail:
         "Every crawler here followed it, but it is an avoidable hop. It usually means the image URL points at a different host from the one you serve, such as the apex domain rather than www.",
-      level: "warn",
       title: "The image redirects",
     });
   }
@@ -236,7 +281,6 @@ const buildFindings = (
     out.push({
       detail:
         "Some platforms refuse anything over about 5MB and will show no image at all.",
-      level: "warn",
       title: "The image is large",
     });
   }
@@ -244,6 +288,24 @@ const buildFindings = (
 };
 
 export const POST = async (request: Request) => {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const limit = rateLimit(ip);
+
+  if (!limit.ok) {
+    return Response.json(
+      { error: "Too many requests. Try again in a minute." },
+      {
+        headers: {
+          "Retry-After": String(limit.retryAfter),
+          "X-RateLimit-Limit": String(RATE_LIMIT_MAX),
+          "X-RateLimit-Remaining": "0",
+        },
+        status: 429,
+      }
+    );
+  }
+
   let body: { url?: string };
   try {
     body = await request.json();

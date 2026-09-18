@@ -4,6 +4,7 @@ import { OgTester } from "@/components/og-tester";
 import { PageTransition } from "@/components/page-transition";
 import { ROUTES } from "@/constants/routes";
 import { createPageMetadata } from "@/seo/metadata";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = createPageMetadata({
   description:
@@ -15,15 +16,12 @@ export const metadata: Metadata = createPageMetadata({
 const ScanPage = () => (
   <PageTransition>
     <section className="container-wrapper relative">
-      <div className="container flex max-w-3xl flex-col gap-4 py-16 md:py-20">
-        <h1 className="from-foreground via-foreground to-foreground/65 bg-linear-to-b bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
-          Scan
-        </h1>
-        <p className="text-muted-foreground text-balance">
-          Paste a URL and see the card the way each platform will show it, plus
-          anything worth fixing. Every check is a real fetch made as that
-          crawler, not a guess and not a cached third party result.
-        </p>
+      <div className="container flex flex-col gap-4 py-16 md:py-20 lg:py-24">
+        <PageHero
+          description="Paste a URL and see the card the way each platform will show it, plus anything worth fixing. Every check is a real fetch made as that crawler, not a guess and not a cached third party result."
+          title="Scan"
+        />
+        
         <div className="mt-4">
           <OgTester />
         </div>
