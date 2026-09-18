@@ -1,0 +1,22 @@
+---
+title: September 17, 2026 - Scan
+description: Check how a link unfurls before you post it.
+date: 2026-09-17
+---
+
+We added [Scan](/scan). Paste a URL and see the card the way each platform will
+draw it, alongside anything worth fixing.
+
+The previews are X, Facebook, LinkedIn, Slack and Discord, because each frames a
+shared link differently and a card that reads well in one can read badly in
+another. Under them is a plain list of what to change: a missing `twitter:card`
+so X shrinks the image to a square, absent `og:image:width`, an image that
+redirects, a file heavy enough that some platforms refuse it.
+
+Every check is a real request made as that crawler, so the answer is what those
+services will actually get rather than a cached third party result.
+
+We also fixed `Showcase`, which threw when its optional `accent` prop was left
+out. The documented example renders again.
+
+Both contributed by [@bhaumikmistry](https://github.com/bhaumikmistry).
