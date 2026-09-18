@@ -20,8 +20,7 @@ export default function IndexPage() {
               description={
                 <>
                   Ready to use, customizable Open Graph image components for
-                  React.{' '}
-                  <br className="hidden sm:block" />
+                  React. <br className="hidden sm:block" />
                   Built on Satori. Distributed via shadcn.
                 </>
               }
