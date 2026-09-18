@@ -96,7 +96,7 @@ const Shell = ({
   name: string;
 }) => (
   <div className="flex flex-col gap-2">
-    <span className="text-muted-foreground flex items-center gap-1.5 text-[11px] font-medium tracking-widest uppercase">
+    <span className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium uppercase">
       {icon}
       {name}
     </span>
@@ -216,7 +216,7 @@ const Report = ({ result }: { result: Result }) => {
       <div className="flex flex-col gap-6 md:col-span-4">
         <h2 className="text-sm font-medium">Preview</h2>
         <div className="grid gap-6 sm:grid-cols-2">
-          <Shell name="X" icon={<XIcon />}>
+          <Shell name="X/Twitter" icon={<XIcon />}>
             <XPreview
               card={m.card}
               description={m.description}
