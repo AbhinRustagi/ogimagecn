@@ -25,6 +25,7 @@ export default function IndexPage() {
                 </>
               }
               descriptionClassName="max-w-2xl text-lg sm:text-xl"
+              showAnnouncement
               title="Beautiful OG images, made simple"
               titleClassName="max-w-7xl"
             />

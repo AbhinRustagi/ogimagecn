@@ -2,12 +2,12 @@ import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
+import { ROUTES } from "@/constants/routes";
 
 export const Announcement = () => (
-  <Badge asChild variant="secondary" className="bg-transparent">
-    <Link href="https://ui.shadcn.com" target="_blank" rel="noreferrer">
-      <span className="flex size-2 rounded-full bg-blue-500" title="New" />
-      Built with shadcn registry <ArrowRightIcon />
+  <Badge asChild variant="secondary">
+    <Link href={ROUTES.SCAN}>
+      Scan any URL for its link preview <ArrowRightIcon />
     </Link>
   </Badge>
 );
