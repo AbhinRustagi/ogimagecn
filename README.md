@@ -32,19 +32,31 @@
 - 🧩 **Composable** — Plain React components styled with the Satori-compatible CSS subset
 - 🖼️ **OG image components** — Minimal, grid, gradient, blog, changelog, quote, and photo
 
+## Community
+
+The ogimagecn community lives on [GitHub](https://github.com/shadcn-labs/ogimagecn), where you can ask questions, share ideas, and show what you've built.
+
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) to get the repo running locally and land a change, and use [issues](https://github.com/shadcn-labs/ogimagecn/issues) and [discussions](https://github.com/shadcn-labs/ogimagecn/discussions) to collaborate. By participating, you agree to the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Security
+
+Please do not open public issues for security vulnerabilities. Follow [SECURITY.md](./SECURITY.md) and report them privately through GitHub Security Advisories.
 
 ## License
 
 [MIT](LICENSE)
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=shadcn-labs/ogimagecn)](https://github.com/shadcn-labs/ogimagecn/graphs/contributors)
+
+> Made with [contrib.rocks](https://contrib.rocks)
+
+## Stats
+
+![Stats](https://repobeats.axiom.co/api/embed/447ac6cad934221ec00d426355b66c86531fc717.svg "Repobeats analytics image")
 
 ## Star History
 
