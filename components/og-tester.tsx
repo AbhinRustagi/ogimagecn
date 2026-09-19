@@ -9,6 +9,7 @@ import { useState } from "react";
 import { z } from "zod";
 
 import {
+  BlueskyIcon,
   DiscordIcon,
   FacebookIcon,
   LinkedInIcon,
@@ -19,6 +20,7 @@ import {
   WhatsAppIcon,
   XIcon,
 } from "@/components/icons";
+import { BlueskyPreview } from "@/components/scan/bluesky-preview";
 import { DiscordPreview } from "@/components/scan/discord-preview";
 import { FacebookPreview } from "@/components/scan/facebook-preview";
 import { LinkedInPreview } from "@/components/scan/linkedin-preview";
@@ -278,6 +280,8 @@ const Report = ({ result }: { result: Result }) => {
               title={m.title}
             />
           </Shell>
+          <Shell name="Bluesky" icon={<BlueskyIcon />}>
+            <BlueskyPreview
           <Shell name="Notion" icon={<NotionIcon />}>
             <NotionPreview
               description={m.description}
