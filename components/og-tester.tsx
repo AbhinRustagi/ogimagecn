@@ -282,12 +282,18 @@ const Report = ({ result }: { result: Result }) => {
           </Shell>
           <Shell name="Bluesky" icon={<BlueskyIcon />}>
             <BlueskyPreview
+              description={m.description}
+              image={src}
+              title={m.title}
+              url={m.url}
+            />
+          </Shell>
           <Shell name="Notion" icon={<NotionIcon />}>
             <NotionPreview
               description={m.description}
               image={src}
               title={m.title}
-              url={result.url}
+              url={m.url}
             />
           </Shell>
         </div>
