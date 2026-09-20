@@ -20,6 +20,7 @@ export const ROUTES = {
   ROBOTS: "/robots.txt",
   RSS: "/rss.xml",
   SCAN: "/scan",
+  SCAN_TEAMS: "/scan/teams",
   SITEMAP: "/sitemap.xml",
   SPONSOR: "/sponsor",
 } as const;
