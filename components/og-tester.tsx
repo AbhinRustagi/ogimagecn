@@ -12,6 +12,7 @@ import {
   BlueskyIcon,
   DiscordIcon,
   FacebookIcon,
+  GoogleIcon,
   LinkedInIcon,
   NotionIcon,
   PinterestIcon,
@@ -23,6 +24,7 @@ import {
 import { BlueskyPreview } from "@/components/scan/bluesky-preview";
 import { DiscordPreview } from "@/components/scan/discord-preview";
 import { FacebookPreview } from "@/components/scan/facebook-preview";
+import { GooglePreview } from "@/components/scan/google-preview";
 import { LinkedInPreview } from "@/components/scan/linkedin-preview";
 import { NotionPreview } from "@/components/scan/notion-preview";
 import { PinterestPreview } from "@/components/scan/pinterest-preview";
@@ -292,6 +294,14 @@ const Report = ({ result }: { result: Result }) => {
             <NotionPreview
               description={m.description}
               image={src}
+              title={m.title}
+              url={m.url}
+            />
+          </Shell>
+          <Shell name="Google" icon={<GoogleIcon />}>
+            <GooglePreview
+              description={m.description}
+              siteName={m.siteName}
               title={m.title}
               url={m.url}
             />
