@@ -16,7 +16,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       lastModified: new Date(),
       priority: 0.8,
-      url: `${SITE.URL}${ROUTES.SCAN_BLUESKY}`,
+      url: `${SITE.URL}${ROUTES.SCAN_REDDIT}`,
+    },
+    {
+      changeFrequency: "monthly",
+      lastModified: new Date(),
+      priority: 0.8,
+      url: `${SITE.URL}${ROUTES.SCAN_REDDIT}`,
     },
     {
       changeFrequency: "monthly",

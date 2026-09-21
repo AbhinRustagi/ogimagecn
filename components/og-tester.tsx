@@ -16,6 +16,7 @@ import {
   LinkedInIcon,
   NotionIcon,
   PinterestIcon,
+  RedditIcon,
   SlackIcon,
   TeamsIcon,
   TelegramIcon,
@@ -29,6 +30,7 @@ import { GooglePreview } from "@/components/scan/google-preview";
 import { LinkedInPreview } from "@/components/scan/linkedin-preview";
 import { NotionPreview } from "@/components/scan/notion-preview";
 import { PinterestPreview } from "@/components/scan/pinterest-preview";
+import { RedditPreview } from "@/components/scan/reddit-preview";
 import { SlackPreview } from "@/components/scan/slack-preview";
 import { TeamsPreview } from "@/components/scan/teams-preview";
 import { TelegramPreview } from "@/components/scan/telegram-preview";
@@ -291,6 +293,14 @@ const Report = ({ result }: { result: Result }) => {
               description={m.description}
               image={src}
               title={m.title}
+            />
+          </Shell>
+          <Shell name="Reddit" icon={<RedditIcon />}>
+            <RedditPreview
+              description={m.description}
+              image={src}
+              title={m.title}
+              url={m.url}
             />
           </Shell>
           <Shell name="Bluesky" icon={<BlueskyIcon />}>
