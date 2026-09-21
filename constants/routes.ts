@@ -21,6 +21,10 @@ export const ROUTES = {
   RSS: "/rss.xml",
   SCAN: "/scan",
   SCAN_NOTION: "/scan/notion",
+  SCAN_REDDIT: "/scan/reddit",
+  SCAN_BLUESKY: "/scan/bluesky",
+  SCAN_TEAMS: "/scan/teams",
+  SCAN_GOOGLE: "/scan/google",
   SITEMAP: "/sitemap.xml",
   SPONSOR: "/sponsor",
 } as const;
