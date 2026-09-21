@@ -20,6 +20,7 @@ export const ROUTES = {
   ROBOTS: "/robots.txt",
   RSS: "/rss.xml",
   SCAN: "/scan",
+  SCAN_BLUESKY: "/scan/bluesky",
   SCAN_TEAMS: "/scan/teams",
   SCAN_GOOGLE: "/scan/google",
   SITEMAP: "/sitemap.xml",
