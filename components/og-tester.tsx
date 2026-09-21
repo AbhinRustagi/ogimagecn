@@ -12,11 +12,13 @@ import {
   BlueskyIcon,
   DiscordIcon,
   FacebookIcon,
+  GoogleIcon,
   LinkedInIcon,
   NotionIcon,
   PinterestIcon,
   RedditIcon,
   SlackIcon,
+  TeamsIcon,
   TelegramIcon,
   WhatsAppIcon,
   XIcon,
@@ -24,11 +26,13 @@ import {
 import { BlueskyPreview } from "@/components/scan/bluesky-preview";
 import { DiscordPreview } from "@/components/scan/discord-preview";
 import { FacebookPreview } from "@/components/scan/facebook-preview";
+import { GooglePreview } from "@/components/scan/google-preview";
 import { LinkedInPreview } from "@/components/scan/linkedin-preview";
 import { NotionPreview } from "@/components/scan/notion-preview";
 import { PinterestPreview } from "@/components/scan/pinterest-preview";
 import { RedditPreview } from "@/components/scan/reddit-preview";
 import { SlackPreview } from "@/components/scan/slack-preview";
+import { TeamsPreview } from "@/components/scan/teams-preview";
 import { TelegramPreview } from "@/components/scan/telegram-preview";
 import { WhatsAppPreview } from "@/components/scan/whatsapp-preview";
 import { XPreview } from "@/components/scan/x-preview";
@@ -260,6 +264,15 @@ const Report = ({ result }: { result: Result }) => {
               url={m.url}
             />
           </Shell>
+          <Shell name="Microsoft Teams" icon={<TeamsIcon />}>
+            <TeamsPreview
+              description={m.description}
+              image={src}
+              siteName={m.siteName}
+              title={m.title}
+              url={m.url}
+            />
+          </Shell>
           <Shell name="WhatsApp" icon={<WhatsAppIcon />}>
             <WhatsAppPreview
               description={m.description}
@@ -302,6 +315,14 @@ const Report = ({ result }: { result: Result }) => {
             <NotionPreview
               description={m.description}
               image={src}
+              title={m.title}
+              url={m.url}
+            />
+          </Shell>
+          <Shell name="Google" icon={<GoogleIcon />}>
+            <GooglePreview
+              description={m.description}
+              siteName={m.siteName}
               title={m.title}
               url={m.url}
             />
