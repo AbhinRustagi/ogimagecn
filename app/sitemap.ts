@@ -15,6 +15,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       changeFrequency: "monthly",
       lastModified: new Date(),
+      priority: 0.8,
+      url: `${SITE.URL}${ROUTES.SCAN_TEAMS}`,
+    },
+    {
+      changeFrequency: "monthly",
+      lastModified: new Date(),
       priority: 0.5,
       url: `${SITE.URL}${ROUTES.SPONSOR}`,
     },

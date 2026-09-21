@@ -17,6 +17,7 @@ import {
   NotionIcon,
   PinterestIcon,
   SlackIcon,
+  TeamsIcon,
   TelegramIcon,
   WhatsAppIcon,
   XIcon,
@@ -29,6 +30,7 @@ import { LinkedInPreview } from "@/components/scan/linkedin-preview";
 import { NotionPreview } from "@/components/scan/notion-preview";
 import { PinterestPreview } from "@/components/scan/pinterest-preview";
 import { SlackPreview } from "@/components/scan/slack-preview";
+import { TeamsPreview } from "@/components/scan/teams-preview";
 import { TelegramPreview } from "@/components/scan/telegram-preview";
 import { WhatsAppPreview } from "@/components/scan/whatsapp-preview";
 import { XPreview } from "@/components/scan/x-preview";
@@ -253,6 +255,15 @@ const Report = ({ result }: { result: Result }) => {
           </Shell>
           <Shell name="Discord" icon={<DiscordIcon />}>
             <DiscordPreview
+              description={m.description}
+              image={src}
+              siteName={m.siteName}
+              title={m.title}
+              url={m.url}
+            />
+          </Shell>
+          <Shell name="Microsoft Teams" icon={<TeamsIcon />}>
+            <TeamsPreview
               description={m.description}
               image={src}
               siteName={m.siteName}
