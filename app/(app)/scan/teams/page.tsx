@@ -21,13 +21,10 @@ const ScanTeamsPage = () => (
         <PageHero
           description={
             <>
-              Paste a URL and see the card the way Microsoft Teams will show
-              it under the message, plus anything worth fixing. Every check is
-              a real fetch made as that crawler.{" "}
-              <Link
-                href={ROUTES.SCAN}
-                className="underline underline-offset-4"
-              >
+              Paste a URL and see the card the way Microsoft Teams will show it
+              under the message, plus anything worth fixing. Every check is a
+              real fetch made as that crawler.{" "}
+              <Link href={ROUTES.SCAN} className="underline underline-offset-4">
                 Back to all platforms
               </Link>
               .

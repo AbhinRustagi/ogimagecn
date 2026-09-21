@@ -28,9 +28,7 @@ export const TeamsPreview = ({
   title,
   url,
 }: TeamsPreviewProps) => (
-  <div
-    className={cn("bg-card overflow-hidden rounded-lg border", className)}
-  >
+  <div className={cn("bg-card overflow-hidden rounded-lg border", className)}>
     <div className="flex flex-col gap-1 px-3 py-2.5">
       <span className="text-muted-foreground text-[11px]">
         {siteName || host(url || image)}
